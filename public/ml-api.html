@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML API Басқару панелі</title>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .ml-api-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .endpoint-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .endpoint-section h3 {
+            color: #ffffff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .endpoint-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .endpoint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .endpoint-method {
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .method-get {
+            background: #4ecdc4;
+            color: #000;
+        }
+        
+        .method-post {
+            background: #56ab2f;
+            color: #fff;
+        }
+        
+        .endpoint-path {
+            font-family: 'Courier New', monospace;
+            color: #4ecdc4;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        
+        .endpoint-description {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .endpoint-params {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .endpoint-params h4 {
+            color: #4ecdc4;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .param-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        
+        .param-name {
+            font-family: 'Courier New', monospace;
+            color: #ffa502;
+            min-width: 100px;
+        }
+        
+        .param-type {
+            color: #b0b0b0;
+            font-size: 0.85em;
+        }
+        
+        .param-desc {
+            color: #e0e0e0;
+            font-size: 0.9em;
+        }
+        
+        .endpoint-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn-test {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+        }
+        
+        .response-area {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .response-area pre {
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        .status-online {
+            background: #4ecdc4;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+        }
+        
+        .status-offline {
+            background: #ff6b6b;
+        }
+        
+        .server-status {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="ml-api-container">
+        <header class="top-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1 style="margin: 0;">
+                    <i class="fas fa-brain"></i> ML API Басқару панелі
+                </h1>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <a href="/" style="color: white; text-decoration: none; padding: 8px 15px; background: rgba(255,255,255,0.2); border-radius: 5px;">
+                        <i class="fas fa-arrow-left"></i> Басты бет
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ML API Сервер Статусы -->
+        <div class="server-status">
+            <h2><i class="fas fa-server"></i> ML API Сервер Статусы</h2>
+            <div id="serverStatus" style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                <span class="status-indicator status-offline" id="statusIndicator"></span>
+                <span id="statusText">Тексерілуде...</span>
+                <button class="btn-test btn-primary" onclick="checkServerStatus()" style="margin-left: auto;">
+                    <i class="fas fa-sync-alt"></i> Жаңарту
+                </button>
+            </div>
+            <div id="serverInfo" style="margin-top: 15px; color: #e0e0e0; font-size: 0.9em;"></div>
+        </div>
+
+        <!-- Модельдерді Оқыту/Жүктеу -->
+        <div class="endpoint-section" style="display: none; background: rgba(78, 205, 196, 0.15); border: 2px solid rgba(78, 205, 196, 0.3);">
+            <h3><i class="fas fa-graduation-cap"></i> Модельдерді Оқыту және Жүктеу</h3>
+            <div class="endpoint-item">
+                <div class="endpoint-description" style="margin-bottom: 20px;">
+                    <strong>Модельдер жүктелмеген болса, оларды оқыту керек.</strong> Модельдер оқытылғаннан кейін, ML API серверін қайта іске қосыңыз.
+                </div>
+                
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <h4 style="color: #4ecdc4; margin-bottom: 10px; font-size: 1em;">
+                        <i class="fas fa-play-circle"></i> Модельдерді оқыту:
+                    </h4>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <button class="btn-test btn-primary" onclick="trainModels('all')" style="background: linear-gradient(45deg, #ff6b6b, #ee5a6f); font-size: 1.1em; padding: 12px 25px;">
+                            <i class="fas fa-rocket"></i> Барлық Модельдерді Оқыту
+                        </button>
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px;">
+                        <button class="btn-test btn-primary" onclick="trainModels('random_forest')" style="background: linear-gradient(45deg, #56ab2f, #4ecdc4);">
+                            <i class="fas fa-tree"></i> Random Forest
+                        </button>
+                        <button class="btn-test btn-primary" onclick="trainModels('gradient_boosting')" style="background: linear-gradient(45deg, #56ab2f, #4ecdc4);">
+                            <i class="fas fa-chart-line"></i> Gradient Boosting
+                        </button>
+                        <button class="btn-test btn-primary" onclick="trainModels('linear')" style="background: linear-gradient(45deg, #56ab2f, #4ecdc4);">
+                            <i class="fas fa-chart-bar"></i> Linear Regression
+                        </button>
+                        <button class="btn-test btn-primary" onclick="trainModels('ridge')" style="background: linear-gradient(45deg, #56ab2f, #4ecdc4);">
+                            <i class="fas fa-chart-area"></i> Ridge Regression
+                        </button>
+                    </div>
+                    <div id="trainStatus" style="display: none; background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 5px; margin-top: 10px;">
+                        <pre id="trainOutput" style="color: #4ecdc4; font-family: 'Courier New', monospace; margin: 0; white-space: pre-wrap;"></pre>
+                    </div>
+                    <div style="color: #b0b0b0; font-size: 0.85em; margin-top: 10px;">
+                        <strong>Немесе Terminal арқылы:</strong><br>
+                        <code style="color: #ffa502; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">node scripts/train-ml-models.js all</code> (барлық модельдер)<br>
+                        <code style="color: #ffa502; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">node scripts/train-ml-models.js [model_type]</code> (бір модель)<br>
+                        <code style="color: #ffa502; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">cd ml && python train.py --model all</code> (барлық модельдер)
+                    </div>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 15px; margin-bottom: 15px;">
+                    <h4 style="color: #4ecdc4; margin-bottom: 10px; font-size: 1em;">
+                        <i class="fas fa-redo"></i> Модельдерді жүктеу:
+                    </h4>
+                    <div style="color: #e0e0e0; font-size: 0.9em; line-height: 1.6;">
+                        Модельдер оқытылғаннан кейін, ML API серверін қайта іске қосыңыз:<br>
+                        <code style="color: #ffa502; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px;">node scripts/start-ml-api.js</code>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255, 165, 0, 0.1); border-left: 3px solid #ffa502; padding: 12px; border-radius: 5px; margin-top: 15px;">
+                    <div style="color: #ffa502; font-weight: bold; margin-bottom: 5px;">
+                        <i class="fas fa-info-circle"></i> Ескерту:
+                    </div>
+                    <div style="color: #e0e0e0; font-size: 0.9em;">
+                        • <strong>Модельдерді оқыту Python серверін қосылудан БҰРЫН жасалуы керек!</strong><br>
+                        • Модельдер <code style="color: #4ecdc4;">ml/models/</code> директориясында сақталады<br>
+                        • Оқытылған модельдер: Forward Model (x1-x6 → y1, y2), Reverse Model (y1, y2 → x1-x6)<br>
+                        • Fuzzy Logic модельдер автоматты түрде құрылады (оқыту қажет емес)<br>
+                        • Модельдер оқытылғаннан кейін, ML API серверін қайта іске қосыңыз
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Health Endpoint -->
+        <div class="endpoint-section">
+            <h3><i class="fas fa-heartbeat"></i> Health Check</h3>
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-get">GET</span>
+                        <span class="endpoint-path">/health</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    ML API серверінің дұрыс жұмыс істеп тұрғанын тексеру. Модельдердің жүктелгенін көрсетеді.
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testEndpoint('health', 'GET')">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-health" style="display: none;">
+                    <pre id="response-health-content"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- ML Model Endpoints -->
+        <div class="endpoint-section">
+            <h3><i class="fas fa-robot"></i> ML Модель Endpoint-тері</h3>
+            
+            <!-- Predict -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-post">POST</span>
+                        <span class="endpoint-path">/predict</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Прямая модель: кіріс параметрлерінен (x1-x6) шығыс параметрлерін (y1, y2) болжау.
+                </div>
+                <div class="endpoint-params">
+                    <h4>Request Body (JSON):</h4>
+                    <div class="param-item">
+                        <span class="param-name">x1</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Шикізат шығыны (т/тәулік)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">x2</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Шикізат тығыздығы (т/м³)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">x3</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Шикізат температурасы (°C)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">x4</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Реактор температурасы (°C)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">x5</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Реактор қысымы (кгс/см²)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">x6</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Катализатор шығыны (т/тәулік)</span>
+                    </div>
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testPredict()">
+                        <i class="fas fa-play"></i> Тестілеу (мысал мәндер)
+                    </button>
+                    <button class="btn-test btn-primary" onclick="testPredictCustom()">
+                        <i class="fas fa-edit"></i> Кастомды мәндер
+                    </button>
+                </div>
+                <div class="response-area" id="response-predict" style="display: none;">
+                    <pre id="response-predict-content"></pre>
+                </div>
+            </div>
+
+            <!-- Reverse Predict -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-post">POST</span>
+                        <span class="endpoint-path">/reverse-predict</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Кері бағыттағы модель: шығыс параметрлерінен (y1, y2) кіріс параметрлерін (x1-x6) болжау.
+                </div>
+                <div class="endpoint-params">
+                    <h4>Request Body (JSON):</h4>
+                    <div class="param-item">
+                        <span class="param-name">y1</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Бензин көлемі (%)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">y2</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Бензин тығыздығы</span>
+                    </div>
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testReversePredict()">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-reverse-predict" style="display: none;">
+                    <pre id="response-reverse-predict-content"></pre>
+                </div>
+            </div>
+
+            <!-- Optimize -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-post">POST</span>
+                        <span class="endpoint-path">/optimize</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Обратная оптимизация: мақсатты y1, y2 үшін оптималды x1-x6 параметрлерін табу.
+                </div>
+                <div class="endpoint-params">
+                    <h4>Request Body (JSON):</h4>
+                    <div class="param-item">
+                        <span class="param-name">y1</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Мақсатты бензин көлемі (%)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">y2</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Мақсатты бензин тығыздығы</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">weights</span>
+                        <span class="param-type">array (optional)</span>
+                        <span class="param-desc">y1 және y2 үшін салмақтар [w1, w2]</span>
+                    </div>
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testOptimize()">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-optimize" style="display: none;">
+                    <pre id="response-optimize-content"></pre>
+                </div>
+            </div>
+
+            <!-- Feature Importance -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-get">GET</span>
+                        <span class="endpoint-path">/feature-importance</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Параметрлердің маңыздылығын алу (Random Forest/Gradient Boosting үшін). Әрбір параметрдің y1 және y2-ге қаншалықты әсер ететінін көрсетеді.
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testFeatureImportance()">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-feature-importance" style="display: none;">
+                    <pre id="response-feature-importance-content"></pre>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-get">GET</span>
+                        <span class="endpoint-path">/metrics</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Модель метрикаларын алу: R² (R-squared), RMSE (Root Mean Squared Error), MAPE (Mean Absolute Percentage Error). Әрбір модель үшін (y1, y2) есептеледі.
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testMetrics()">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-metrics" style="display: none;">
+                    <pre id="response-metrics-content"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fuzzy Logic Endpoints -->
+        <div class="endpoint-section">
+            <h3><i class="fas fa-project-diagram"></i> Fuzzy Logic Endpoint-тері</h3>
+            
+            <!-- Fuzzy Predict -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-post">POST</span>
+                        <span class="endpoint-path">/fuzzy/predict</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Айқын емес логика (Fuzzy Logic) болжау: эксперттік ережелер базасы арқылы тиістілік функцияларын қолдана отырып, x1-x6 → y1, y2 болжау.
+                </div>
+                <div class="endpoint-params">
+                    <h4>Request Body (JSON):</h4>
+                    <div class="param-item">
+                        <span class="param-name">x1-x6</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Кіріс параметрлері (жоғарыда көрсетілген)</span>
+                    </div>
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testFuzzyPredict()">
+                        <i class="fas fa-play"></i> Тестілеу
+                    </button>
+                </div>
+                <div class="response-area" id="response-fuzzy-predict" style="display: none;">
+                    <pre id="response-fuzzy-predict-content"></pre>
+                </div>
+            </div>
+
+            <!-- Hybrid Predict -->
+            <div class="endpoint-item">
+                <div class="endpoint-header">
+                    <div>
+                        <span class="endpoint-method method-post">POST</span>
+                        <span class="endpoint-path">/hybrid/predict</span>
+                    </div>
+                </div>
+                <div class="endpoint-description">
+                    Гибридті болжау: Fuzzy Logic + ML модельдерді біріктіру. Салмақталған орташа арқылы нәтиже береді.
+                </div>
+                <div class="endpoint-params">
+                    <h4>Request Body (JSON):</h4>
+                    <div class="param-item">
+                        <span class="param-name">x1-x6</span>
+                        <span class="param-type">number</span>
+                        <span class="param-desc">Кіріс параметрлері</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">fuzzy_weight</span>
+                        <span class="param-type">number (optional)</span>
+                        <span class="param-desc">Fuzzy Logic салмағы (default: 0.3)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">ml_weight</span>
+                        <span class="param-type">number (optional)</span>
+                        <span class="param-desc">ML модель салмағы (default: 0.7)</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">use_fuzzy_only</span>
+                        <span class="param-type">boolean (optional)</span>
+                        <span class="param-desc">Тек Fuzzy Logic қолдану</span>
+                    </div>
+                    <div class="param-item">
+                        <span class="param-name">use_ml_only</span>
+                        <span class="param-type">boolean (optional)</span>
+                        <span class="param-desc">Тек ML модель қолдану</span>
+                    </div>
+                </div>
+                <div class="endpoint-buttons">
+                    <button class="btn-test btn-primary" onclick="testHybridPredict()">
+                        <i class="fas fa-play"></i> Тестілеу (Fuzzy + ML)
+                    </button>
+                    <button class="btn-test btn-primary" onclick="testHybridPredictFuzzyOnly()">
+                        <i class="fas fa-play"></i> Тек Fuzzy
+                    </button>
+                </div>
+                <div class="response-area" id="response-hybrid-predict" style="display: none;">
+                    <pre id="response-hybrid-predict-content"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Node.js сервер арқылы прокси - mixed content проблемасын шешу үшін
+        const ML_API_URL = '/api/ml';
+        
+        // Сервер статусын тексеру
+        async function checkServerStatus() {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const serverInfo = document.getElementById('serverInfo');
+            
+            indicator.className = 'status-indicator status-offline';
+            statusText.textContent = 'Тексерілуде...';
+            serverInfo.textContent = '';
+            
+            try {
+                const response = await fetch(`${ML_API_URL}/health`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    indicator.className = 'status-indicator status-online';
+                    statusText.textContent = 'Онлайн';
+                    
+                    let info = `Модельдер: `;
+                    info += `Forward: ${data.models_loaded ? '✅' : '❌'}, `;
+                    info += `Reverse: ${data.reverse_model_loaded ? '✅' : '❌'}, `;
+                    info += `Fuzzy: ${data.fuzzy_model_loaded ? '✅' : '❌'}, `;
+                    info += `Hybrid: ${data.hybrid_model_loaded ? '✅' : '❌'}`;
+                    serverInfo.textContent = info;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                indicator.className = 'status-indicator status-offline';
+                statusText.textContent = 'Офлайн';
+                serverInfo.textContent = `Қате: ${error.message}. ML API серверін іске қосыңыз!`;
+            }
+        }
+        
+        // Endpoint тестілеу функциясы
+        async function testEndpoint(endpoint, method = 'GET', body = null) {
+            // Endpoint атауындағы / символын - ауыстыру (ID үшін)
+            const endpointId = endpoint.replace(/\//g, '-');
+            const responseArea = document.getElementById(`response-${endpointId}`);
+            const responseContent = document.getElementById(`response-${endpointId}-content`);
+            
+            if (!responseArea || !responseContent) {
+                console.error(`Element not found: response-${endpointId}`);
+                alert(`Қате: response элементі табылмады (${endpointId})`);
+                return;
+            }
+            
+            responseArea.style.display = 'block';
+            responseContent.textContent = 'Жүктелуде...';
+            
+            try {
+                const options = {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' }
+                };
+                
+                if (body) {
+                    options.body = JSON.stringify(body);
+                }
+                
+                const startTime = Date.now();
+                const response = await fetch(`${ML_API_URL}/${endpoint}`, options);
+                const duration = Date.now() - startTime;
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                
+                const result = {
+                    status: response.status,
+                    statusText: response.statusText,
+                    duration: `${duration}ms`,
+                    data: data
+                };
+                
+                responseContent.textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                responseContent.textContent = `ҚАТЕ: ${error.message}\n\nML API серверін іске қосыңыз:\nnode scripts/start-ml-api.js`;
+            }
+        }
+        
+        // Predict тестілеу
+        function testPredict() {
+            const body = {
+                x1: 240,
+                x2: 0.9,
+                x3: 210,
+                x4: 518,
+                x5: 2.2,
+                x6: 1750
+            };
+            testEndpoint('predict', 'POST', body);
+        }
+        
+        function testPredictCustom() {
+            const x1 = prompt('x1 - Шикізат шығыны:', '240');
+            const x2 = prompt('x2 - Шикізат тығыздығы:', '0.9');
+            const x3 = prompt('x3 - Шикізат температурасы:', '210');
+            const x4 = prompt('x4 - Реактор температурасы:', '518');
+            const x5 = prompt('x5 - Реактор қысымы:', '2.2');
+            const x6 = prompt('x6 - Катализатор шығыны:', '1750');
+            
+            if (x1 && x2 && x3 && x4 && x5 && x6) {
+                const body = {
+                    x1: parseFloat(x1),
+                    x2: parseFloat(x2),
+                    x3: parseFloat(x3),
+                    x4: parseFloat(x4),
+                    x5: parseFloat(x5),
+                    x6: parseFloat(x6)
+                };
+                testEndpoint('predict', 'POST', body);
+            }
+        }
+        
+        // Reverse Predict тестілеу
+        function testReversePredict() {
+            const body = {
+                y1: 48.5,
+                y2: 0.72
+            };
+            testEndpoint('reverse-predict', 'POST', body);
+        }
+        
+        // Optimize тестілеу
+        function testOptimize() {
+            const body = {
+                y1: 50.0,
+                y2: 0.75
+            };
+            testEndpoint('optimize', 'POST', body);
+        }
+        
+        // Feature Importance тестілеу
+        function testFeatureImportance() {
+            testEndpoint('feature-importance', 'GET');
+        }
+        
+        // Metrics тестілеу
+        function testMetrics() {
+            testEndpoint('metrics', 'GET');
+        }
+        
+        // Fuzzy Predict тестілеу
+        function testFuzzyPredict() {
+            const body = {
+                x1: 240,
+                x2: 0.9,
+                x3: 210,
+                x4: 518,
+                x5: 2.2,
+                x6: 1750
+            };
+            testEndpoint('fuzzy/predict', 'POST', body);
+        }
+        
+        // Hybrid Predict тестілеу
+        function testHybridPredict() {
+            const body = {
+                x1: 240,
+                x2: 0.9,
+                x3: 210,
+                x4: 518,
+                x5: 2.2,
+                x6: 1750,
+                fuzzy_weight: 0.3,
+                ml_weight: 0.7
+            };
+            testEndpoint('hybrid/predict', 'POST', body);
+        }
+        
+        function testHybridPredictFuzzyOnly() {
+            const body = {
+                x1: 240,
+                x2: 0.9,
+                x3: 210,
+                x4: 518,
+                x5: 2.2,
+                x6: 1750,
+                use_fuzzy_only: true
+            };
+            testEndpoint('hybrid/predict', 'POST', body);
+        }
+        
+        // Модельдерді оқыту функциясы
+        function trainModels(modelType) {
+            const trainStatus = document.getElementById('trainStatus');
+            const trainOutput = document.getElementById('trainOutput');
+            
+            trainStatus.style.display = 'block';
+            
+            if (modelType === 'all') {
+                trainOutput.textContent = 'Барлық модельдер оқытылуда...\n\n';
+                trainOutput.textContent += 'ЕСКЕРТУ: Браузерден тікелей оқыту мүмкін емес.\n';
+                trainOutput.textContent += 'Терминалда мына команданы орындаңыз:\n\n';
+                trainOutput.textContent += 'node scripts/train-ml-models.js all\n\n';
+                trainOutput.textContent += 'Немесе:\n';
+                trainOutput.textContent += 'cd ml && python train.py --model all\n\n';
+                trainOutput.textContent += 'Бұл команда барлық модельдерді рет-ретімен оқытады:\n';
+                trainOutput.textContent += '  1. Random Forest\n';
+                trainOutput.textContent += '  2. Gradient Boosting\n';
+                trainOutput.textContent += '  3. Linear Regression\n';
+                trainOutput.textContent += '  4. Ridge Regression\n\n';
+                trainOutput.textContent += 'Оқыту аяқталғаннан кейін, ML API серверін қайта іске қосыңыз:\n';
+                trainOutput.textContent += 'node scripts/start-ml-api.js';
+            } else {
+                trainOutput.textContent = `Модельдер оқытылуда: ${modelType}...\n\n`;
+                trainOutput.textContent += 'ЕСКЕРТУ: Браузерден тікелей оқыту мүмкін емес.\n';
+                trainOutput.textContent += 'Терминалда мына команданы орындаңыз:\n\n';
+                trainOutput.textContent += `node scripts/train-ml-models.js ${modelType}\n\n`;
+                trainOutput.textContent += 'Немесе:\n';
+                trainOutput.textContent += `cd ml && python train.py --model ${modelType}\n\n`;
+                trainOutput.textContent += 'Оқыту аяқталғаннан кейін, ML API серверін қайта іске қосыңыз:\n';
+                trainOutput.textContent += 'node scripts/start-ml-api.js';
+            }
+        }
+        
+        // Бет жүктелгенде сервер статусын тексеру
+        document.addEventListener('DOMContentLoaded', () => {
+            checkServerStatus();
+            // 5 секунд сайын статусты жаңарту
+            setInterval(checkServerStatus, 5000);
+        });
+    </script>
+</body>
+</html>
+

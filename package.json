@@ -1,0 +1,38 @@
+{
+  "name": "m-admin",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:ml\"",
+    "dev:server": "nodemon ./bin/www",
+    "dev:ml": "node scripts/start-ml-api.js",
+    "ml:start": "node scripts/start-ml-api.js",
+    "ml:train": "node scripts/train-ml-models.js all",
+    "ml:train:single": "cd ml && python train.py --model random_forest --source csv",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:seed": "npx sequelize-cli db:seed:all"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^17.2.3",
+    "express": "~4.16.1",
+    "express-session": "^1.17.3",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.35.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.2",
+    "sequelize-cli": "^6.6.2"
+  }
+}
