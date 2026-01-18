@@ -1952,3 +1952,72 @@ window.addEventListener('beforeunload', (e) => {
         e.returnValue = 'Авариялық режимде жүйе жабылмауы керек!';
     }
 });
+document.addEventListener('DOMContentLoaded', () => {
+    initPlotlyGraphs();
+});
+
+function initPlotlyGraphs() {
+    renderSurface();
+    renderTimeTrend();
+    renderFuzzyHybrid();
+    renderNormalization();
+}
+
+function renderSurface() {
+    const x = [1, 2, 3, 4, 5, 6];
+    const y = [1, 2, 3, 4, 5];
+    const z = y.map(v => x.map(xv => xv * v));
+
+    Plotly.newPlot('surfaceChart', [{
+        type: 'surface',
+        x, y, z
+    }], {
+        margin: { t: 40 },
+        scene: {
+            xaxis: { title: 'x₁–x₆' },
+            yaxis: { title: 'Параметр' },
+            zaxis: { title: 'y₁' }
+        }
+    });
+}
+
+function renderTimeTrend() {
+    const t = [...Array(20).keys()];
+    const y1 = t.map(v => 45 + Math.sin(v / 3));
+
+    Plotly.newPlot('timeTrendChart', [{
+        x: t,
+        y: y1,
+        mode: 'lines+markers',
+        name: 'y₁'
+    }], {
+        xaxis: { title: 'Уақыт' },
+        yaxis: { title: 'Мән' }
+    });
+}
+
+function renderFuzzyHybrid() {
+    const x = [...Array(10).keys()];
+    Plotly.newPlot('fuzzyPlotlyChart', [{
+        x, y: x.map(v => v * 4),
+        type: 'bar',
+        name: 'Fuzzy'
+    }]);
+
+    Plotly.newPlot('hybridPlotlyChart', [{
+        x, y: x.map(v => v * 4.5),
+        type: 'bar',
+        name: 'Hybrid'
+    }]);
+}
+
+function renderNormalization() {
+    Plotly.newPlot('normalizationChart', [{
+        type: 'indicator',
+        mode: 'gauge+number',
+        value: 72,
+        gauge: {
+            axis: { range: [0, 100] }
+        }
+    }]);
+}

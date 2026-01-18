@@ -34,7 +34,7 @@ createdb m_admin_dev
 
 ### 2. Проект көшірмесін жасау
 ```bash
-git clone <repository-url>
+git clone <https://github.com/Yermekub40/m-admin>
 cd m-admin
 ```
 
@@ -44,7 +44,7 @@ npm install
 ```
 
 ### 4. База конфигурациясы
-`config.env` файлын жасап, өз база деректеріңізді енгізіңіз:
+`.env` файлын жасап, өз база деректеріңізді енгізіңіз:
 ```
 DB_HOST=localhost
 DB_PORT=5432
@@ -62,7 +62,7 @@ npm run db:migrate
 
 Егер синхронизацияны қосқыңыз келесе (тек дамыту үшін):
 ```bash
-# config.env файлында
+# .env файлында
 SYNC_DB=true
 ```
 
@@ -75,7 +75,7 @@ npm run ml:train
 cd ml
 python -m venv venv
 venv\Scripts\activate  # Windows
-# source venv/bin/activate  # Linux/Mac
+source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 python train.py --model random_forest --source csv
 ```
