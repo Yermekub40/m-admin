@@ -8,7 +8,7 @@ class ProcessController {
             x3: 210,    // Шикізат температурасы
             x4: 518,    // Реактор температурасы
             x5: 2.2,    // Реактор қысымы
-            x6: 1750,   // Катализатор шығыны
+            x6: 16.5,   // Катализатор шығыны
             y1: 48,     // Бензин шығымы (инпут)
             y2: 0.7     // Бензин тығыздығы (инпут)
         };
@@ -195,6 +195,7 @@ class ProcessController {
         // Графиктерді инициализациялау
         this.initCharts();
         this.loadChartData();
+        buildY1X1Chart();
         // 5 секунд сайын ML сервердің статусын тексеру
         this.mlStatusCheckInterval = setInterval(() => {
             this.checkMLServerStatus();
@@ -1592,7 +1593,7 @@ class ProcessController {
             x3: 210,
             x4: 518,
             x5: 2.2,
-            x6: 1750,
+            x6: 16.5,
             y1: 48,
             y2: 0.7
         };
@@ -1952,72 +1953,4 @@ window.addEventListener('beforeunload', (e) => {
         e.returnValue = 'Авариялық режимде жүйе жабылмауы керек!';
     }
 });
-document.addEventListener('DOMContentLoaded', () => {
-    initPlotlyGraphs();
-});
 
-function initPlotlyGraphs() {
-    renderSurface();
-    renderTimeTrend();
-    renderFuzzyHybrid();
-    renderNormalization();
-}
-
-function renderSurface() {
-    const x = [1, 2, 3, 4, 5, 6];
-    const y = [1, 2, 3, 4, 5];
-    const z = y.map(v => x.map(xv => xv * v));
-
-    Plotly.newPlot('surfaceChart', [{
-        type: 'surface',
-        x, y, z
-    }], {
-        margin: { t: 40 },
-        scene: {
-            xaxis: { title: 'x₁–x₆' },
-            yaxis: { title: 'Параметр' },
-            zaxis: { title: 'y₁' }
-        }
-    });
-}
-
-function renderTimeTrend() {
-    const t = [...Array(20).keys()];
-    const y1 = t.map(v => 45 + Math.sin(v / 3));
-
-    Plotly.newPlot('timeTrendChart', [{
-        x: t,
-        y: y1,
-        mode: 'lines+markers',
-        name: 'y₁'
-    }], {
-        xaxis: { title: 'Уақыт' },
-        yaxis: { title: 'Мән' }
-    });
-}
-
-function renderFuzzyHybrid() {
-    const x = [...Array(10).keys()];
-    Plotly.newPlot('fuzzyPlotlyChart', [{
-        x, y: x.map(v => v * 4),
-        type: 'bar',
-        name: 'Fuzzy'
-    }]);
-
-    Plotly.newPlot('hybridPlotlyChart', [{
-        x, y: x.map(v => v * 4.5),
-        type: 'bar',
-        name: 'Hybrid'
-    }]);
-}
-
-function renderNormalization() {
-    Plotly.newPlot('normalizationChart', [{
-        type: 'indicator',
-        mode: 'gauge+number',
-        value: 72,
-        gauge: {
-            axis: { range: [0, 100] }
-        }
-    }]);
-}

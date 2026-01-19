@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталитикалық крекинг қондырғысының жұмыс режимдерін басқару жүйесі</title>
-  <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Chart.js -->
     <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
@@ -220,11 +220,11 @@
                 </div>
             </section>
 
-            <!-- Графиктер панелі 
+            <!-- Графиктер панелі -->
             <section class="charts-panel">
-                <h2><i class="fas fa-chart-line"></i> Тарихи деректер</h2>
+                <h2><i class="fas fa-chart-line"></i> Графиктер панелі</h2>
                 
-                <!-- Период таңдау 
+                <!-- Период таңдау -->
                 <div class="period-selector">
                     <label for="periodSelect">Период:</label>
                     <select id="periodSelect">
@@ -239,39 +239,39 @@
                     </button>
                 </div>
 
-                <!-- Графиктер контейнері 
+                <!-- Графиктер контейнері -->
                 <div class="charts-grid">
-                    <!-- Температура графигі 
+                    <!-- Температура графигі -->
                     <div class="chart-container">
                         <h3>Температура (°С)</h3>
                         <canvas id="temperatureChart"></canvas>
                     </div>
 
-                    <!-- Қысым графигі 
+                    <!-- Қысым графигі -->
                     <div class="chart-container">
                         <h3>Қысым (кгс/см²)</h3>
                         <canvas id="pressureChart"></canvas>
                     </div>
 
-                    <!-- Шығын графигі 
+                    <!-- Шығын графигі -->
                     <div class="chart-container">
                         <h3>Шығын (т/тәулік)</h3>
                         <canvas id="flowChart"></canvas>
                     </div>
 
-                    <!-- Бензин шығымы графигі 
+                    <!-- Бензин шығымы графигі -->
                     <div class="chart-container">
                         <h3>Бензин шығымы (%)</h3>
                         <canvas id="gasolineVolumeChart"></canvas>
                     </div>
 
-                    <!-- Бензин тығыздығы графигі 
+                    <!-- Бензин тығыздығы графигі -->
                     <div class="chart-container">
                         <h3>Бензин тығыздығы (кг/м³)</h3>
                         <canvas id="gasolineDensityChart"></canvas>
                     </div>
 
-                    <!-- Катализатор шығыны графигі 
+                    <!-- Катализатор шығыны графигі -->
                     <div class="chart-container">
                         <h3>Катализатор шығыны (кг/шикізат тоннасы)</h3>
                         <canvas id="catalystChart"></canvas>
@@ -280,56 +280,7 @@
             </section>
         </div>
 <!-- ================== ГРАФИКТЕР (Plotly) ================== -->
-<section class="plotly-graphs-panel">
-    <h2><i class="fas fa-project-diagram"></i> Графиктер (Модель визуализациясы)</h2>
 
-    <div class="plotly-controls">
-        <label>
-            Период:
-            <select id="plotlyPeriod">
-                <option value="1h">1 сағат</option>
-                <option value="6h">6 сағат</option>
-                <option value="24h" selected>24 сағат</option>
-                <option value="7d">7 күн</option>
-                <option value="30d">30 күн</option>
-            </select>
-        </label>
-
-        <button class="btn btn-secondary" id="plotlyRefreshBtn">
-            <i class="fas fa-sync-alt"></i> Жаңарту
-        </button>
-    </div>
-
-    <!-- y1 = f(x1–x6) -->
-    <div class="plotly-chart">
-        <h3>y₁ = f(x₁–x₆)</h3>
-        <div id="surfaceChart" style="width:100%; height:450px;"></div>
-    </div>
-
-    <!-- Уақыттық тренд -->
-    <div class="plotly-chart">
-        <h3>Уақыттық трендтер</h3>
-        <div id="timeTrendChart" style="width:100%; height:350px;"></div>
-    </div>
-
-    <!-- Fuzzy vs Hybrid -->
-    <div class="plotly-row">
-        <div>
-            <h3>Fuzzy модель</h3>
-            <div id="fuzzyPlotlyChart" style="width:100%; height:350px;"></div>
-        </div>
-        <div>
-            <h3>Hybrid модель</h3>
-            <div id="hybridPlotlyChart" style="width:100%; height:350px;"></div>
-        </div>
-    </div>
-
-    <!-- Нормалау -->
-    <div class="plotly-chart">
-        <h3>Нормалау индикаторлары</h3>
-        <div id="normalizationChart" style="width:100%; height:300px;"></div>
-    </div>
-</section>
 <!-- ======================================================== -->
         <!-- Хабарландырулар -->
         <div class="notifications-panel">
