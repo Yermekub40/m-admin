@@ -1,0 +1,180 @@
+/* =========================
+   ML API PANEL (SCOPED)
+   ========================= */
+
+.ml-api-panel .ml-api-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.ml-api-panel .endpoint-section {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ml-api-panel .endpoint-section h3 {
+    color: #ffffff;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ml-api-panel .endpoint-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ml-api-panel .endpoint-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ml-api-panel .endpoint-method {
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.ml-api-panel .method-get {
+    background: #4ecdc4;
+    color: #000;
+}
+
+.ml-api-panel .method-post {
+    background: #56ab2f;
+    color: #fff;
+}
+
+.ml-api-panel .endpoint-path {
+    font-family: 'Courier New', monospace;
+    color: #4ecdc4;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.ml-api-panel .endpoint-description {
+    color: #e0e0e0;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.ml-api-panel .endpoint-params {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.ml-api-panel .endpoint-params h4 {
+    color: #4ecdc4;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.ml-api-panel .param-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.ml-api-panel .param-name {
+    font-family: 'Courier New', monospace;
+    color: #ffa502;
+    min-width: 100px;
+}
+
+.ml-api-panel .param-type {
+    color: #b0b0b0;
+    font-size: 0.85em;
+}
+
+.ml-api-panel .param-desc {
+    color: #e0e0e0;
+    font-size: 0.9em;
+}
+
+.ml-api-panel .endpoint-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ml-api-panel .btn-test {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ml-api-panel .btn-test:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.ml-api-panel .btn-primary {
+    background: linear-gradient(45deg, #4ecdc4, #44a08d);
+    color: white;
+}
+
+.ml-api-panel .response-area {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.ml-api-panel .response-area pre {
+    color: #e0e0e0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.ml-api-panel .status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.ml-api-panel .status-online {
+    background: #4ecdc4;
+    box-shadow: 0 0 10px rgba(78, 205, 196, 0.5);
+}
+
+.ml-api-panel .status-offline {
+    background: #ff6b6b;
+}
+
+.ml-api-panel .server-status {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}

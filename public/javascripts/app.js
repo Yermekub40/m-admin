@@ -1,5 +1,26 @@
 // М-Admin - Жүйе басқаруы JavaScript
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-scroll]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const targetId = btn.getAttribute('data-scroll');
+            const target = document.getElementById(targetId);
+
+            if (!target) {
+                console.warn('Scroll target not found:', targetId);
+                return;
+            }
+
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    });
+});
+
+
 class ProcessController {
     constructor() {
         this.inputs = {
@@ -1951,4 +1972,24 @@ window.addEventListener('beforeunload', (e) => {
         e.preventDefault();
         e.returnValue = 'Авариялық режимде жүйе жабылмауы керек!';
     }
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const scrollBtn = document.getElementById('scrollToTop');
+
+    if (!scrollBtn) return;
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            scrollBtn.classList.add('show');
+        } else {
+            scrollBtn.classList.remove('show');
+        }
+    });
+
+    scrollBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
 });

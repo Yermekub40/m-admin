@@ -667,7 +667,7 @@
                 x3: 210,
                 x4: 518,
                 x5: 2.2,
-                x6: 1750
+                x6: 16.5
             };
             testEndpoint('predict', 'POST', body);
         }
@@ -678,7 +678,7 @@
             const x3 = prompt('x3 - Шикізат температурасы:', '210');
             const x4 = prompt('x4 - Реактор температурасы:', '518');
             const x5 = prompt('x5 - Реактор қысымы:', '2.2');
-            const x6 = prompt('x6 - Катализатор шығыны:', '1750');
+            const x6 = prompt('x6 - Катализатор шығыны:', '16.5');
             
             if (x1 && x2 && x3 && x4 && x5 && x6) {
                 const body = {
@@ -729,7 +729,7 @@
                 x3: 210,
                 x4: 518,
                 x5: 2.2,
-                x6: 1750
+                x6: 16.5
             };
             testEndpoint('fuzzy/predict', 'POST', body);
         }
@@ -742,7 +742,7 @@
                 x3: 210,
                 x4: 518,
                 x5: 2.2,
-                x6: 1750,
+                x6: 16.5,
                 fuzzy_weight: 0.3,
                 ml_weight: 0.7
             };
@@ -756,7 +756,7 @@
                 x3: 210,
                 x4: 518,
                 x5: 2.2,
-                x6: 1750,
+                x6: 16.5,
                 use_fuzzy_only: true
             };
             testEndpoint('hybrid/predict', 'POST', body);
