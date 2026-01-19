@@ -195,7 +195,6 @@ class ProcessController {
         // Графиктерді инициализациялау
         this.initCharts();
         this.loadChartData();
-        buildY1X1Chart();
         // 5 секунд сайын ML сервердің статусын тексеру
         this.mlStatusCheckInterval = setInterval(() => {
             this.checkMLServerStatus();
@@ -1593,7 +1592,7 @@ class ProcessController {
             x3: 210,
             x4: 518,
             x5: 2.2,
-            x6: 16.5,
+            x6: 11.5,
             y1: 48,
             y2: 0.7
         };
@@ -1953,4 +1952,3 @@ window.addEventListener('beforeunload', (e) => {
         e.returnValue = 'Авариялық режимде жүйе жабылмауы керек!';
     }
 });
-

@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Каталитикалық крекинг қондырғысының жұмыс режимдерін басқару жүйесі</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Chart.js -->
-    <script src="https://cdn.plot.ly/plotly-2.30.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <!-- Жоғарғы панель - Негізгі мәліметтер -->
+        <!-- Жоғарғы панель - Негізгі мәліметтер және индикаторлар -->
         <header class="top-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="margin: 0;"><i class="fas fa-cogs"></i> Каталитикалық крекинг қондырғысының жұмыс режимдерін басқару жүйесі</h1>
@@ -25,7 +24,7 @@
                         </span>
                     </div>
                     <a href="/reports" class="btn btn-info" style="text-decoration: none; padding: 8px 15px; background: rgba(78, 205, 196, 0.3); color: white; border: 1px solid rgba(78, 205, 196, 0.5); border-radius: 5px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
-                        <i class="fas fa-file-alt"></i> Есептер
+                        <i class="fas fa-file-alt"></i> Отчеттар
                     </a>
                     <a href="/ml-api" style="background: rgba(78, 205, 196, 0.3); color: white; border: 1px solid rgba(78, 205, 196, 0.5); padding: 8px 15px; border-radius: 5px; text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 8px;">
                         <i class="fas fa-brain"></i> ML API
@@ -40,22 +39,7 @@
                     </button>
                 </div>
             </div>
-        </header>
-        <div class="main-content">
-              <section class="data-table-section">
-                <div class="table-controls">
-                    <button class="btn btn-secondary" id="">
-                        <i class="fas fa-sliders-h"></i> Басқару панелі</button>
-                    <button class="btn btn-secondary" id="">
-                        <i class="fas fa-table"></i> Сақталған деректер</button>
-                    <button class="btn btn-secondary" id="">
-                        <i class="fas fa-chart-line"></i> Графиктер </button>
-                </div>
-               </section>
-        </div>
-        <!-- Индикаторлар -->
-        <div class="main-content"> 
-         <div class="indicators-grid">
+            <div class="indicators-grid">
                 <div class="indicator-card">
                     <h3>Шикізат шығыны</h3>
                     <div class="value-display" id="rawMaterialFlow">0</div>
@@ -87,10 +71,111 @@
                     <div class="unit">кг/шикізат тоннасы</div>
                 </div>
             </div>
-        </div>
-              
-        <!-- Деректер кестесі -->
+        </header>
+
         <div class="main-content">
+            <!-- Инпут панелі -->
+            <section class="input-panel">
+                <h2><i class="fas fa-sliders-h"></i> Басқару панелі</h2>
+                
+                <!-- Инпут параметрлері -->
+                <div class="input-section">
+                    <h3>Кіріс параметрлері (x1-x6)</h3>
+                    <div class="inputs-grid">
+                        <div class="input-group">
+                            <label for="x1">x1 - Шикізат шығыны (т/тәулік)</label>
+                            <input type="number" id="x1" min="0" max="400" step="0.1" value="240">
+                            <div class="range-display">0 - 400</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="x2">x2 - Шикізат тығыздығы (кг/м³)</label>
+                            <input type="number" id="x2" min="0.4" max="1.6" step="0.001" value="0.9">
+                            <div class="range-display">0.4 - 1.6</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="x3">x3 - Шикізат температурасы (°С)</label>
+                            <input type="number" id="x3" min="0" max="255" step="0.1" value="210">
+                            <div class="range-display">0 - 255</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="x4">x4 - Реактор температурасы (°С)</label>
+                            <input type="number" id="x4" min="0" max="600" step="0.1" value="518">
+                            <div class="range-display">0 - 600</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="x5">x5 - Реактор қысымы (кгс/см²)</label>
+                            <input type="number" id="x5" min="0.5" max="3.5" step="0.01" value="2.2">
+                            <div class="range-display">0.5 - 3.5</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="x6">x6 - Катализатор шығыны (кг/шикізат тоннасы)</label>
+                            <input type="number" id="x6" min="11.5" max="17" step="0.1" value="11.5">
+                            <div class="range-display">11.5 - 17</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Шығыс параметрлері (инпут ретінде) -->
+                <div class="output-section">
+                    <h3>Шығыс параметрлері (y1-y2)</h3>
+                    <div class="inputs-grid">
+                        <div class="input-group">
+                            <label for="y1">y1 - Бензин шығымы (%)</label>
+                            <input type="number" id="y1" min="0" max="70" step="0.1" value="48">
+                            <div class="range-display">0 - 70</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="y2">y2 - Бензин тығыздығы (кг/м³)</label>
+                            <input type="number" id="y2" min="0.43" max="0.95" step="0.001" value="0.7">
+                            <div class="range-display">0.43 - 0.95</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Басқару түймелері -->
+                <div class="control-buttons">
+                    <button class="btn btn-primary" id="calculateBtn">
+                        <i class="fas fa-save"></i> Деректерді сақтау
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <i class="fas fa-undo"></i> Қалпына келтіру
+                    </button>
+                    <button class="btn btn-danger" id="emergencyBtn">
+                        <i class="fas fa-exclamation-triangle"></i> Авариялық тоқтату
+                    </button>
+                </div>
+
+                <!-- ML функциялары -->
+                <div class="ml-section">
+                    <h3><i class="fas fa-brain"></i> Машиналық оқыту функциялары</h3>
+                    <div class="ml-buttons">
+                        <button class="btn btn-info" id="predictBtn">
+                            <i class="fas fa-calculator"></i> Болжау (x1-x6 → y1, y2)
+                        </button>
+                        <button class="btn btn-success" id="reversePredictBtn">
+                            <i class="fas fa-arrow-left"></i> Кері болжау (y1, y2 → x1-x6)
+                        </button>
+                        <button class="btn btn-warning" id="optimizeBtn">
+                            <i class="fas fa-optimize"></i> Оптимизация (y1, y2 → x1-x6)
+                        </button>
+                        <button class="btn btn-secondary" id="featureImportanceBtn">
+                            <i class="fas fa-chart-bar"></i> Параметрлердің маңыздылығы
+                        </button>
+                        <button class="btn btn-info" id="modelInfoBtn">
+                            <i class="fas fa-info-circle"></i> Модель ақпараттары
+                        </button>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Деректер кестесі -->
             <section class="data-table-section">
                 <h2><i class="fas fa-table"></i> Сақталған деректер</h2>
                 <div class="table-controls">
@@ -133,116 +218,10 @@
                     <!-- Пагинация элементтері -->
                 </div>
             </section>
-            <section><div>
 
-            </div></section>
-        </div>    
-        <div class="main-content">
-            <!-- Инпут панелі -->
-            <section class="input-panel">
-                <h2><i class="fas fa-sliders-h"></i> Басқару панелі</h2>
-                
-                <!-- Инпут параметрлері -->
-                <div class="input-section">
-                    <h3>Кіріс параметрлері (x1-x6)</h3>
-                    <div class="inputs-grid">
-                        <div class="input-group">
-                            <label for="x1">x1 - Шикізат шығыны (т/тәулік)</label>
-                            <input type="number" id="x1" min="0" max="400" step="0.1" value="240">
-                            <div class="range-display">0 - 400</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="x2">x2 - Шикізат тығыздығы (кг/м³)</label>
-                            <input type="number" id="x2" min="0.4" max="1.6" step="0.001" value="0.9">
-                            <div class="range-display">0.4 - 1.6</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="x3">x3 - Шикізат температурасы (°С)</label>
-                            <input type="number" id="x3" min="0" max="255" step="0.1" value="210">
-                            <div class="range-display">0 - 255</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="x4">x4 - Реактор температурасы (°С)</label>
-                            <input type="number" id="x4" min="0" max="600" step="0.1" value="518">
-                            <div class="range-display">0 - 600</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="x5">x5 - Реактор қысымы (кгс/см²)</label>
-                            <input type="number" id="x5" min="0.5" max="3.5" step="0.01" value="2.2">
-                            <div class="range-display">0.5 - 3.5</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="x6">x6 - Катализатор шығыны (кг/шикізат тоннасы)</label>
-                            <input type="number" id="x6" min="1480" max="1990" step="0.1" value="11.5">
-                            <div class="range-display">11.5 - 17</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Шығыс параметрлері (инпут ретінде) -->
-                <div class="output-section">
-                    <h3>Шығыс параметрлері (y1-y2)</h3>
-                    <div class="inputs-grid">
-                        <div class="input-group">
-                            <label for="y1">y1 - Бензин шығымы (%)</label>
-                            <input type="number" id="y1" min="0" max="70" step="0.1" value="48">
-                            <div class="range-display">0 - 70</div>
-                        </div>
-
-                        <div class="input-group">
-                            <label for="y2">y2 - Бензин тығыздығы (кг/м³)</label>
-                            <input type="number" id="y2" min="0.43" max="0.95" step="0.001" value="0.7">
-                            <div class="range-display">0.43 - 0.95</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Басқару түймелері -->
-                <div class="control-buttons">
-                    <button class="btn btn-primary" id="calculateBtn">
-                        <i class="fas fa-save"></i> Деректерді сақтау
-                    </button>
-                    <button class="btn btn-secondary" id="resetBtn">
-                        <i class="fas fa-undo"></i> Қалпына келтіру
-                    </button>
-                    <button class="btn btn-danger" id="emergencyBtn">
-                        <i class="fas fa-exclamation-triangle"></i> Апаттық тоқтату
-                    </button>
-                </div>
-
-                <!-- ML функциялары -->
-                <div class="ml-section">
-                    <h3><i class="fas fa-brain"></i> Машиналық оқыту функциялары</h3>
-                    <div class="ml-buttons">
-                        <button class="btn btn-info" id="predictBtn">
-                            <i class="fas fa-calculator"></i> Болжау (x1-x6 → y1, y2)
-                        </button>
-                        <button class="btn btn-success" id="reversePredictBtn">
-                            <i class="fas fa-arrow-left"></i> Кері болжау (y1, y2 → x1-x6)
-                        </button>
-                        <button class="btn btn-warning" id="optimizeBtn">
-                            <i class="fas fa-optimize"></i> Оптимизация (y1, y2 → x1-x6)
-                        </button>
-                        <button class="btn btn-secondary" id="featureImportanceBtn">
-                            <i class="fas fa-chart-bar"></i> Параметрлердің маңыздылығы
-                        </button>
-                        <button class="btn btn-info" id="modelInfoBtn">
-                            <i class="fas fa-info-circle"></i> Модель ақпараттары
-                        </button>
-                    </div>
-                </div>
-
-            </section>
-
-            
             <!-- Графиктер панелі -->
             <section class="charts-panel">
-                <h2><i class="fas fa-chart-line"></i> Графиктер панелі</h2>
+                <h2><i class="fas fa-chart-line"></i> Исторические данные и графики</h2>
                 
                 <!-- Период таңдау -->
                 <div class="period-selector">
@@ -299,9 +278,7 @@
                 </div>
             </section>
         </div>
-<!-- ================== ГРАФИКТЕР (Plotly) ================== -->
 
-<!-- ======================================================== -->
         <!-- Хабарландырулар -->
         <div class="notifications-panel">
             <h3><i class="fas fa-bell"></i> Хабарландырулар</h3>

@@ -12,7 +12,7 @@ module.exports = {
       env: {
         NODE_ENV: 'production',
         PORT: 5987,
-       // HTTPS: 'true'
+        HTTPS: 'true'
       },
       env_development: {
         NODE_ENV: 'development',
