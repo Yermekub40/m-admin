@@ -40,6 +40,16 @@
                     </button>
                 </div>
             </div>
+        <div class="container">
+            <div class="table-controls">
+                    <button class="btn btn-secondary" id="">
+                        <i class="fas fa-sliders-h"></i> Басқару панелі</button>
+                    <button class="btn btn-secondary" id="">
+                        <i class="fas fa-table"></i> Сақталған деректер</button>
+                    <button class="btn btn-secondary" id="">
+                        <i class="fas fa-chart-line"></i> Графиктер </button>
+            </div>
+        </div>
             <div class="indicators-grid">
                 <div class="indicator-card">
                     <h3>Шикізат шығыны</h3>
@@ -73,7 +83,54 @@
                 </div>
             </div>
         </header>
+        <!-- Деректер кестесі -->
+        <div class="main-content">
+            <section class="data-table-section">
+                <h2><i class="fas fa-table"></i> Сақталған деректер</h2>
+                <div class="table-controls">
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Жаңарту
+                    </button>
+                    <button class="btn btn-success" id="uploadExcelBtn">
+                        <i class="fas fa-file-excel"></i> Excel файл жүктеу
+                    </button>
+                    <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display: none;">
+                    <button class="btn btn-danger" id="clearAllBtn">
+                        <i class="fas fa-trash"></i> Барлығын тазалау
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>X1</th>
+                                <th>X2</th>
+                                <th>X3</th>
+                                <th>X4</th>
+                                <th>X5</th>
+                                <th>X6</th>
+                                <th>Y1</th>
+                                <th>Y2</th>
+                                <th>Жасалған</th>
+                                <th>Әрекеттер</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <tr>
+                                <td colspan="10" class="no-data">Деректер жоқ</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="pagination">
+                    <!-- Пагинация элементтері -->
+                </div>
+            </section>
+            <section><div>
 
+            </div></section>
+        </div>    
         <div class="main-content">
             <!-- Инпут панелі -->
             <section class="input-panel">
@@ -176,50 +233,7 @@
 
             </section>
 
-            <!-- Деректер кестесі -->
-            <section class="data-table-section">
-                <h2><i class="fas fa-table"></i> Сақталған деректер</h2>
-                <div class="table-controls">
-                    <button class="btn btn-secondary" id="refreshBtn">
-                        <i class="fas fa-sync-alt"></i> Жаңарту
-                    </button>
-                    <button class="btn btn-success" id="uploadExcelBtn">
-                        <i class="fas fa-file-excel"></i> Excel файл жүктеу
-                    </button>
-                    <input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display: none;">
-                    <button class="btn btn-danger" id="clearAllBtn">
-                        <i class="fas fa-trash"></i> Барлығын тазалау
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table class="data-table" id="dataTable">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>X1</th>
-                                <th>X2</th>
-                                <th>X3</th>
-                                <th>X4</th>
-                                <th>X5</th>
-                                <th>X6</th>
-                                <th>Y1</th>
-                                <th>Y2</th>
-                                <th>Жасалған</th>
-                                <th>Әрекеттер</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dataTableBody">
-                            <tr>
-                                <td colspan="10" class="no-data">Деректер жоқ</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="pagination" id="pagination">
-                    <!-- Пагинация элементтері -->
-                </div>
-            </section>
-
+            
             <!-- Графиктер панелі -->
             <section class="charts-panel">
                 <h2><i class="fas fa-chart-line"></i> Графиктер панелі</h2>
