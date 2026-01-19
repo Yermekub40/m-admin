@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Жоғарғы панель - Негізгі мәліметтер және индикаторлар -->
+        <!-- Жоғарғы панель - Негізгі мәліметтер -->
         <header class="top-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h1 style="margin: 0;"><i class="fas fa-cogs"></i> Каталитикалық крекинг қондырғысының жұмыс режимдерін басқару жүйесі</h1>
@@ -40,17 +40,22 @@
                     </button>
                 </div>
             </div>
-        <div class="container">
-            <div class="table-controls">
+        </header>
+        <div class="main-content">
+              <section class="data-table-section">
+                <div class="table-controls">
                     <button class="btn btn-secondary" id="">
                         <i class="fas fa-sliders-h"></i> Басқару панелі</button>
                     <button class="btn btn-secondary" id="">
                         <i class="fas fa-table"></i> Сақталған деректер</button>
                     <button class="btn btn-secondary" id="">
                         <i class="fas fa-chart-line"></i> Графиктер </button>
-            </div>
+                </div>
+               </section>
         </div>
-            <div class="indicators-grid">
+        <!-- Индикаторлар -->
+        <div class="main-content"> 
+         <div class="indicators-grid">
                 <div class="indicator-card">
                     <h3>Шикізат шығыны</h3>
                     <div class="value-display" id="rawMaterialFlow">0</div>
@@ -82,7 +87,8 @@
                     <div class="unit">кг/шикізат тоннасы</div>
                 </div>
             </div>
-        </header>
+        </div>
+              
         <!-- Деректер кестесі -->
         <div class="main-content">
             <section class="data-table-section">
