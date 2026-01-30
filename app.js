@@ -63,8 +63,15 @@ app.use(cookieParser());
 const isProduction = process.env.NODE_ENV === 'production';
 const isHTTPS = process.env.HTTPS === 'true' || isProduction;
 
+// Ensure a secure session secret is provided in production
+const sessionSecret = process.env.SESSION_SECRET;
+if (isProduction && (!sessionSecret || sessionSecret === 'm-admin-secret-key-change-in-production')) {
+  console.error('FATAL: SESSION_SECRET must be set in production. Set the SESSION_SECRET env var and restart.');
+  process.exit(1);
+}
+
 const sessionConfig = {
-  secret: process.env.SESSION_SECRET || 'm-admin-secret-key-change-in-production',
+  secret: sessionSecret || 'm-admin-secret-key-change-in-production',
   resave: false,
   saveUninitialized: false,
   name: 'm-admin.sid',
@@ -98,5 +105,18 @@ app.use('/api', apiRouter);
 
 // Базаны синхрондау
 syncDatabase();
+
+// Error handler (sanitize errors for production)
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err && err.stack ? err.stack : err);
+  const isDev = process.env.NODE_ENV === 'development';
+  const payload = {
+    success: false,
+    message: isDev ? (err && err.message) : 'Internal Server Error'
+  };
+  if (isDev && err && err.stack) payload.stack = err.stack;
+  const status = (err && err.status) || 500;
+  res.status(status).json(payload);
+});
 
 module.exports = app;
