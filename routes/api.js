@@ -104,101 +104,9 @@ router.post('/process-data', async (req, res) => {
   }
 });
 
-// Деректерді жаңарту
-router.put('/process-data/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { x1, x2, x3, x4, x5, x6, y1, y2 } = req.body;
-    
-    const processData = await ProcessData.findByPk(id);
-    if (!processData) {
-      return res.status(404).json({
-        success: false,
-        message: 'Деректер табылмады'
-      });
-    }
-    
-    await processData.update({
-      x1: x1 ? parseFloat(x1) : processData.x1,
-      x2: x2 ? parseFloat(x2) : processData.x2,
-      x3: x3 ? parseFloat(x3) : processData.x3,
-      x4: x4 ? parseFloat(x4) : processData.x4,
-      x5: x5 ? parseFloat(x5) : processData.x5,
-      x6: x6 ? parseFloat(x6) : processData.x6,
-      y1: y1 ? parseFloat(y1) : processData.y1,
-      y2: y2 ? parseFloat(y2) : processData.y2
-    });
-    
-    res.json({
-      success: true,
-      message: 'Деректер сәтті жаңартылды',
-      data: processData
-    });
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Деректерді жаңарту кезінде қате пайда болды',
-      error: error.message
-    });
-  }
-});
-
-// Деректерді жою
-router.delete('/process-data/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const processData = await ProcessData.findByPk(id);
-    if (!processData) {
-      return res.status(404).json({
-        success: false,
-        message: 'Деректер табылмады'
-      });
-    }
-    
-    await processData.destroy();
-    
-    res.json({
-      success: true,
-      message: 'Деректер сәтті жойылды'
-    });
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Деректерді жою кезінде қате пайда болды',
-      error: error.message
-    });
-  }
-});
-
-// Жеке деректерді алу
-router.get('/process-data/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    
-    const processData = await ProcessData.findByPk(id);
-    if (!processData) {
-      return res.status(404).json({
-        success: false,
-        message: 'Деректер табылмады'
-      });
-    }
-    
-    res.json({
-      success: true,
-      data: processData
-    });
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Деректерді алу кезінде қате пайда болды',
-      error: error.message
-    });
-  }
-});
+// (Moved) The parameterized routes for individual process data items are defined
+// after static routes like /latest, /stats, /history to avoid conflicts where
+// 'history' or 'latest' would be interpreted as an :id.
 
 // Соңғы деректерді алу
 router.get('/process-data/latest', async (req, res) => {
@@ -303,6 +211,103 @@ router.get('/process-data/history', async (req, res) => {
     });
   }
 });
+
+  // Parameterized routes for individual process data items (placed after static routes)
+  // Деректерді жаңарту
+  router.put('/process-data/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { x1, x2, x3, x4, x5, x6, y1, y2 } = req.body;
+    
+      const processData = await ProcessData.findByPk(id);
+      if (!processData) {
+        return res.status(404).json({
+          success: false,
+          message: 'Деректер табылмады'
+        });
+      }
+    
+      await processData.update({
+        x1: x1 ? parseFloat(x1) : processData.x1,
+        x2: x2 ? parseFloat(x2) : processData.x2,
+        x3: x3 ? parseFloat(x3) : processData.x3,
+        x4: x4 ? parseFloat(x4) : processData.x4,
+        x5: x5 ? parseFloat(x5) : processData.x5,
+        x6: x6 ? parseFloat(x6) : processData.x6,
+        y1: y1 ? parseFloat(y1) : processData.y1,
+        y2: y2 ? parseFloat(y2) : processData.y2
+      });
+    
+      res.json({
+        success: true,
+        message: 'Деректер сәтті жаңартылды',
+        data: processData
+      });
+    } catch (error) {
+      console.error('API Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Деректерді жаңарту кезінде қате пайда болды',
+        error: error.message
+      });
+    }
+  });
+
+  // Деректерді жою
+  router.delete('/process-data/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+    
+      const processData = await ProcessData.findByPk(id);
+      if (!processData) {
+        return res.status(404).json({
+          success: false,
+          message: 'Деректер табылмады'
+        });
+      }
+    
+      await processData.destroy();
+    
+      res.json({
+        success: true,
+        message: 'Деректер сәтті жойылды'
+      });
+    } catch (error) {
+      console.error('API Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Деректерді жою кезінде қате пайда болды',
+        error: error.message
+      });
+    }
+  });
+
+  // Жеке деректерді алу
+  router.get('/process-data/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+    
+      const processData = await ProcessData.findByPk(id);
+      if (!processData) {
+        return res.status(404).json({
+          success: false,
+          message: 'Деректер табылмады'
+        });
+      }
+    
+      res.json({
+        success: true,
+        data: processData
+      });
+    } catch (error) {
+      console.error('API Error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Деректерді алу кезінде қате пайда болды',
+        error: error.message
+      });
+    }
+  });
 
 // ========== ML API Endpoints ==========
 

@@ -10,8 +10,13 @@ class ReportsController {
     init() {
         this.bindEvents();
         this.loadUserInfo();
-        this.loadTextReport();
+        console.log('ReportsController: init() start');
         this.initCharts();
+        // Open graphic report by default so charts are visible immediately
+        this.switchReport('graphic');
+        // Preload statistics so content is ready when user opens that tab
+        this.loadStatisticsReport('24h');
+        console.log('ReportsController: init() complete');
     }
 
     async loadUserInfo() {
@@ -457,6 +462,7 @@ class ReportsController {
 
     // Графиктерді инициализациялау
     initCharts() {
+        console.log('ReportsController: initCharts() - locating canvases');
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
@@ -478,14 +484,36 @@ class ReportsController {
             }
         };
 
-        ['tempChart', 'pressureChart', 'volumeChart', 'flowChart'].forEach(chartId => {
-            const ctx = document.getElementById(chartId);
-            if (ctx) {
-                this.charts[chartId] = new Chart(ctx, {
-                    type: 'line',
-                    data: { labels: [], datasets: [] },
-                    options: chartOptions
-                });
+        // Support multiple canvas id variants used across pages
+        const chartCandidates = {
+            tempChart: ['tempChart', 'temperatureChart'],
+            pressureChart: ['pressureChart', 'pressureChart'],
+            volumeChart: ['volumeChart', 'gasolineVolumeChart'],
+            flowChart: ['flowChart', 'flowChart']
+        };
+
+        Object.keys(chartCandidates).forEach(chartId => {
+            const ids = chartCandidates[chartId];
+            let created = false;
+            for (let i = 0; i < ids.length; i++) {
+                const el = document.getElementById(ids[i]);
+                if (el) {
+                    console.log(`ReportsController: initializing chart '${chartId}' on element id='${ids[i]}'`);
+                    try {
+                        this.charts[chartId] = new Chart(el, {
+                            type: 'line',
+                            data: { labels: [], datasets: [] },
+                            options: chartOptions
+                        });
+                        created = true;
+                    } catch (err) {
+                        console.error(`ReportsController: failed to create chart '${chartId}' on id='${ids[i]}'`, err);
+                    }
+                    break;
+                }
+            }
+            if (!created) {
+                console.warn(`ReportsController: no canvas found for chart '${chartId}' (tried: ${ids.join(', ')})`);
             }
         });
     }
@@ -494,6 +522,8 @@ class ReportsController {
         if (this.charts[chartId]) {
             this.charts[chartId].data = data;
             this.charts[chartId].update();
+        } else {
+            console.warn(`ReportsController: updateChart called but chart '${chartId}' is not initialized`);
         }
     }
 

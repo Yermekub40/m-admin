@@ -1713,6 +1713,7 @@ class ProcessController {
     }
     
     initCharts() {
+        console.log('ProcessController: initCharts() start');
         /** Графиктерді инициализациялау */
         const chartOptions = {
             responsive: true,
@@ -1833,6 +1834,7 @@ class ProcessController {
                 },
                 options: chartOptions
             });
+            console.log("ProcessController: initialized 'gasolineVolume' chart on id=gasolineVolumeChart");
         }
         
         // Бензин тығыздығы графигі
@@ -1852,6 +1854,7 @@ class ProcessController {
                 },
                 options: chartOptions
             });
+            console.log("ProcessController: initialized 'gasolineDensity' chart on id=gasolineDensityChart");
         }
         
         // Катализатор графигі
@@ -1871,12 +1874,15 @@ class ProcessController {
                 },
                 options: chartOptions
             });
+            console.log("ProcessController: initialized 'catalyst' chart on id=catalystChart");
         }
+        console.log('ProcessController: initCharts() complete');
     }
     
     async loadChartData() {
         /** Исторические данные жүктеу және графиктерді жаңарту */
         try {
+            console.log('ProcessController: loadChartData() fetching history', this.currentPeriod);
             const response = await fetch(`/api/process-data/history?period=${this.currentPeriod}`, {
                 credentials: 'include'
             });
@@ -1889,6 +1895,7 @@ class ProcessController {
             const result = await response.json();
             
             if (result.success && result.data) {
+                console.log('ProcessController: loadChartData() received', result.data.length, 'points');
                 this.updateCharts(result.data);
             } else {
                 console.error('Графиктер деректерін жүктеу қатесі:', result.message);
@@ -1915,6 +1922,7 @@ class ProcessController {
             });
         });
         
+        console.log('ProcessController: updateCharts() updating', data.length, 'points');
         // Температура графигі
         if (this.charts.temperature) {
             this.charts.temperature.data.labels = labels;
@@ -1943,6 +1951,8 @@ class ProcessController {
             this.charts.gasolineVolume.data.labels = labels;
             this.charts.gasolineVolume.data.datasets[0].data = data.map(item => parseFloat(item.y1));
             this.charts.gasolineVolume.update();
+        } else {
+            console.warn("ProcessController: gasolineVolume chart not initialized");
         }
         
         // Бензин тығыздығы графигі
@@ -1950,6 +1960,8 @@ class ProcessController {
             this.charts.gasolineDensity.data.labels = labels;
             this.charts.gasolineDensity.data.datasets[0].data = data.map(item => parseFloat(item.y2));
             this.charts.gasolineDensity.update();
+        } else {
+            console.warn("ProcessController: gasolineDensity chart not initialized");
         }
         
         // Катализатор графигі
@@ -1957,6 +1969,8 @@ class ProcessController {
             this.charts.catalyst.data.labels = labels;
             this.charts.catalyst.data.datasets[0].data = data.map(item => parseFloat(item.x6));
             this.charts.catalyst.update();
+        } else {
+            console.warn("ProcessController: catalyst chart not initialized");
         }
     }
 }
