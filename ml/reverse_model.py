@@ -13,6 +13,17 @@ import joblib
 import os
 
 
+def safe_mape(y_true, y_pred, epsilon=1e-8):
+    y_true = np.array(y_true, dtype=float)
+    y_pred = np.array(y_pred, dtype=float)
+    if y_true.shape != y_pred.shape:
+        raise ValueError('y_true and y_pred must have same shape for MAPE')
+    mask = np.abs(y_true) > epsilon
+    if not np.any(mask):
+        return np.nan
+    return np.mean(np.abs((y_true[mask] - y_pred[mask]) / y_true[mask])) * 100
+
+
 class ReverseModel:
     """
     Кері бағыттағы модель: шығыс параметрлерінен (y1, y2) 
@@ -105,7 +116,7 @@ class ReverseModel:
             metrics_dict[param_name] = {
                 'R2': r2_score(x_test_actual, x_pred),
                 'RMSE': np.sqrt(mean_squared_error(x_test_actual, x_pred)),
-                'MAPE': mean_absolute_percentage_error(x_test_actual, x_pred) * 100
+                'MAPE': safe_mape(x_test_actual, x_pred)
             }
         
         self.metrics = metrics_dict
@@ -119,6 +130,36 @@ class ReverseModel:
         
         return self.metrics
     
+    def evaluate(self, df, test_size=0.2):
+        """
+        Метриканы қайта есептеу (егер модель жүктелген болса)
+        """
+        if any(self.models[param] is None for param in self.output_names):
+            raise ValueError('Кері модельдер жүктелмеген')
+
+        Y, X = self.prepare_data(df)
+        Y_train, Y_test, X_train, X_test = train_test_split(
+            Y, X, test_size=test_size, random_state=42
+        )
+
+        Y_test_scaled = self.scalers['Y'].transform(Y_test)
+
+        metrics_dict = {}
+        for i, param_name in enumerate(self.output_names):
+            x_test_actual = X_test[:, i].ravel()
+            x_pred_scaled = self.models[param_name].predict(Y_test_scaled)
+            x_pred = self.scalers[param_name].inverse_transform(x_pred_scaled.reshape(-1, 1)).ravel()
+
+            metrics_dict[param_name] = {
+                'R2': r2_score(x_test_actual, x_pred),
+                'RMSE': np.sqrt(mean_squared_error(x_test_actual, x_pred)),
+                'MAPE': safe_mape(x_test_actual, x_pred)
+            }
+
+        self.metrics = metrics_dict
+        return self.metrics
+
+
     def predict(self, Y):
         """
         Болжау жасау

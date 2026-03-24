@@ -13,6 +13,17 @@ import joblib
 import os
 
 
+def safe_mape(y_true, y_pred, epsilon=1e-8):
+    y_true = np.array(y_true, dtype=float)
+    y_pred = np.array(y_pred, dtype=float)
+    if y_true.shape != y_pred.shape:
+        raise ValueError('y_true and y_pred must have same shape for MAPE')
+    mask = np.abs(y_true) > epsilon
+    if not np.any(mask):
+        return np.nan
+    return np.mean(np.abs((y_true[mask] - y_pred[mask]) / y_true[mask])) * 100
+
+
 class ForwardModel:
     """
     Прямая модель: кіріс параметрлерінен (x1-x6) 
@@ -101,12 +112,12 @@ class ForwardModel:
             'y1': {
                 'R2': r2_score(y1_test_actual, y1_pred),
                 'RMSE': np.sqrt(mean_squared_error(y1_test_actual, y1_pred)),
-                'MAPE': mean_absolute_percentage_error(y1_test_actual, y1_pred) * 100
+                'MAPE': safe_mape(y1_test_actual, y1_pred)
             },
             'y2': {
                 'R2': r2_score(y2_test_actual, y2_pred),
                 'RMSE': np.sqrt(mean_squared_error(y2_test_actual, y2_pred)),
-                'MAPE': mean_absolute_percentage_error(y2_test_actual, y2_pred) * 100
+                'MAPE': safe_mape(y2_test_actual, y2_pred)
             }
         }
         
@@ -123,6 +134,45 @@ class ForwardModel:
         
         return self.metrics
     
+    def evaluate(self, df, test_size=0.2):
+        """
+        Метриканы қайта есептеу (егер модель жүктелген болса)
+        """
+        if self.models['y1'] is None or self.models['y2'] is None:
+            raise ValueError('Модельдер жүктелмеген')
+
+        X, y1, y2 = self.prepare_data(df)
+        X_train, X_test, y1_train, y1_test, y2_train, y2_test = train_test_split(
+            X, y1, y2, test_size=test_size, random_state=42
+        )
+
+        X_test_scaled = self.scalers['X'].transform(X_test)
+
+        y1_pred_scaled = self.models['y1'].predict(X_test_scaled)
+        y2_pred_scaled = self.models['y2'].predict(X_test_scaled)
+
+        y1_pred = self.scalers['y1'].inverse_transform(y1_pred_scaled.reshape(-1, 1)).ravel()
+        y2_pred = self.scalers['y2'].inverse_transform(y2_pred_scaled.reshape(-1, 1)).ravel()
+
+        y1_test_actual = y1_test.ravel()
+        y2_test_actual = y2_test.ravel()
+
+        self.metrics = {
+            'y1': {
+                'R2': r2_score(y1_test_actual, y1_pred),
+                'RMSE': np.sqrt(mean_squared_error(y1_test_actual, y1_pred)),
+                'MAPE': safe_mape(y1_test_actual, y1_pred)
+            },
+            'y2': {
+                'R2': r2_score(y2_test_actual, y2_pred),
+                'RMSE': np.sqrt(mean_squared_error(y2_test_actual, y2_pred)),
+                'MAPE': safe_mape(y2_test_actual, y2_pred)
+            }
+        }
+
+        return self.metrics
+
+
     def predict(self, X):
         """
         Болжау жасау

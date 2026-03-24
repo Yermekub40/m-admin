@@ -461,15 +461,35 @@ def get_metrics():
             'success': False,
             'error': 'Модельдер жүктелмеген'
         }), 500
-    
+
     try:
         metrics = forward_model.metrics
-        
+
+        if not metrics:
+            # Егер metrics бос болса, деректерден қайта есептеу
+            from data_loader import DataLoader
+            loader = DataLoader()
+            try:
+                df = loader.load_data(source=os.getenv('ML_DATA_SOURCE', 'csv'))
+            except Exception as e:
+                return jsonify({
+                    'success': False,
+                    'error': f'Деректерді жүктеу қатесі: {str(e)}'
+                }), 500
+
+            try:
+                metrics = forward_model.evaluate(df)
+            except Exception as e:
+                return jsonify({
+                    'success': False,
+                    'error': f'Метриканы қайта есептеу қатесі: {str(e)}'
+                }), 500
+
         return jsonify({
             'success': True,
             'metrics': metrics
         })
-        
+
     except Exception as e:
         return jsonify({
             'success': False,
