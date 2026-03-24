@@ -776,4 +776,27 @@ router.post('/process-data/upload-excel', upload.single('excelFile'), async (req
   }
 });
 
+// Барлық деректерді жою
+router.delete('/process-data', async (req, res) => {
+  try {
+    const deletedCount = await ProcessData.destroy({
+      where: {},
+      truncate: true
+    });
+
+    res.json({
+      success: true,
+      message: 'Барлық деректер сәтті жойылды',
+      deletedCount: deletedCount
+    });
+  } catch (error) {
+    console.error('API Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Барлық деректерді жою кезінде қате пайда болды',
+      error: error.message
+    });
+  }
+});
+
 module.exports = router;

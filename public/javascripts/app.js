@@ -807,8 +807,18 @@ class ProcessController {
         }
         
         try {
-            // Барлық деректерді жою үшін API endpoint қосу керек
-            this.addNotification('Барлық деректерді жою функциясы әзірленуде', 'warning');
+            const response = await fetch('/api/process-data', {
+                method: 'DELETE'
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                this.addNotification(`Барлық деректер сәтті жойылды! ${result.deletedCount} жазба жойылды`, 'success');
+                this.loadData(); // Кестені жаңарту
+            } else {
+                this.addNotification('Деректерді жою кезінде қате пайда болды: ' + result.message, 'error');
+            }
         } catch (error) {
             console.error('API қатесі:', error);
             this.addNotification('Деректерді жою кезінде қате пайда болды', 'error');
