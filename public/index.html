@@ -328,43 +328,39 @@
                 </div>
                 <div class="endpoint-params">
                     <h4>Request Body (JSON):</h4>
-                    <div class="param-item">
-                        <span class="param-name">x1</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Шикізат шығыны (т/тәулік)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">x2</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Шикізат тығыздығы (т/м³)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">x3</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Шикізат температурасы (°C)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">x4</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Реактор температурасы (°C)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">x5</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Реактор қысымы (кгс/см²)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">x6</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Катализатор шығыны (т/тәулік)</span>
+                    <div class="param-input-grid">
+                        <div class="param-input-item">
+                            <label for="predict-x1">x1 - Шикізат шығыны (т/тәулік)</label>
+                            <input type="number" id="predict-x1" value="240" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="predict-x2">x2 - Шикізат тығыздығы (т/м³)</label>
+                            <input type="number" id="predict-x2" value="0.9" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="predict-x3">x3 - Шикізат температурасы (°C)</label>
+                            <input type="number" id="predict-x3" value="210" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="predict-x4">x4 - Реактор температурасы (°C)</label>
+                            <input type="number" id="predict-x4" value="518" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="predict-x5">x5 - Реактор қысымы (кгс/см²)</label>
+                            <input type="number" id="predict-x5" value="2.2" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="predict-x6">x6 - Катализатор шығыны (кг/т)</label>
+                            <input type="number" id="predict-x6" value="16.5" step="0.01">
+                        </div>
                     </div>
                 </div>
                 <div class="endpoint-buttons">
                     <button class="btn-test btn-primary" onclick="testPredict()">
-                        <i class="fas fa-play"></i> Тестілеу (мысал мәндер)
+                        <i class="fas fa-play"></i> Тестілеу
                     </button>
-                    <button class="btn-test btn-primary" onclick="testPredictCustom()">
-                        <i class="fas fa-edit"></i> Кастомды мәндер
+                    <button class="btn-test btn-secondary" onclick="resetPredictValues()">
+                        <i class="fas fa-undo"></i> Қалпына келтіру
                     </button>
                 </div>
                 <div class="response-area" id="response-predict" style="display: none;">
@@ -385,15 +381,15 @@
                 </div>
                 <div class="endpoint-params">
                     <h4>Request Body (JSON):</h4>
-                    <div class="param-item">
-                        <span class="param-name">y1</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Бензин көлемі (%)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">y2</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Бензин тығыздығы</span>
+                    <div class="param-input-grid">
+                        <div class="param-input-item">
+                            <label for="reverse-y1">y1 - Бензин көлемі (%)</label>
+                            <input type="number" id="reverse-y1" value="50.0" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="reverse-y2">y2 - Бензин тығыздығы (кг/м³)</label>
+                            <input type="number" id="reverse-y2" value="0.75" step="0.001">
+                        </div>
                     </div>
                 </div>
                 <div class="endpoint-buttons">
@@ -419,20 +415,23 @@
                 </div>
                 <div class="endpoint-params">
                     <h4>Request Body (JSON):</h4>
-                    <div class="param-item">
-                        <span class="param-name">y1</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Мақсатты бензин көлемі (%)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">y2</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Мақсатты бензин тығыздығы</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">weights</span>
-                        <span class="param-type">array (optional)</span>
-                        <span class="param-desc">y1 және y2 үшін салмақтар [w1, w2]</span>
+                    <div class="param-input-grid">
+                        <div class="param-input-item">
+                            <label for="optimize-y1">y1 - Мақсатты бензин көлемі (%)</label>
+                            <input type="number" id="optimize-y1" value="50.0" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="optimize-y2">y2 - Мақсатты бензин тығыздығы (кг/м³)</label>
+                            <input type="number" id="optimize-y2" value="0.75" step="0.001">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="optimize-w1">y1 салмағы (optional)</label>
+                            <input type="number" id="optimize-w1" value="1.0" step="0.1" min="0" max="1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="optimize-w2">y2 салмағы (optional)</label>
+                            <input type="number" id="optimize-w2" value="1.0" step="0.1" min="0" max="1">
+                        </div>
                     </div>
                 </div>
                 <div class="endpoint-buttons">
@@ -505,10 +504,31 @@
                 </div>
                 <div class="endpoint-params">
                     <h4>Request Body (JSON):</h4>
-                    <div class="param-item">
-                        <span class="param-name">x1-x6</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Кіріс параметрлері (жоғарыда көрсетілген)</span>
+                    <div class="param-input-grid">
+                        <div class="param-input-item">
+                            <label for="fuzzy-x1">x1 - Шикізат шығыны (т/тәулік)</label>
+                            <input type="number" id="fuzzy-x1" value="240" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="fuzzy-x2">x2 - Шикізат тығыздығы (т/м³)</label>
+                            <input type="number" id="fuzzy-x2" value="0.9" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="fuzzy-x3">x3 - Шикізат температурасы (°C)</label>
+                            <input type="number" id="fuzzy-x3" value="210" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="fuzzy-x4">x4 - Реактор температурасы (°C)</label>
+                            <input type="number" id="fuzzy-x4" value="518" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="fuzzy-x5">x5 - Реактор қысымы (кгс/см²)</label>
+                            <input type="number" id="fuzzy-x5" value="2.2" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="fuzzy-x6">x6 - Катализатор шығыны (кг/т)</label>
+                            <input type="number" id="fuzzy-x6" value="16.5" step="0.01">
+                        </div>
                     </div>
                 </div>
                 <div class="endpoint-buttons">
@@ -534,30 +554,39 @@
                 </div>
                 <div class="endpoint-params">
                     <h4>Request Body (JSON):</h4>
-                    <div class="param-item">
-                        <span class="param-name">x1-x6</span>
-                        <span class="param-type">number</span>
-                        <span class="param-desc">Кіріс параметрлері</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">fuzzy_weight</span>
-                        <span class="param-type">number (optional)</span>
-                        <span class="param-desc">Fuzzy Logic салмағы (default: 0.3)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">ml_weight</span>
-                        <span class="param-type">number (optional)</span>
-                        <span class="param-desc">ML модель салмағы (default: 0.7)</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">use_fuzzy_only</span>
-                        <span class="param-type">boolean (optional)</span>
-                        <span class="param-desc">Тек Fuzzy Logic қолдану</span>
-                    </div>
-                    <div class="param-item">
-                        <span class="param-name">use_ml_only</span>
-                        <span class="param-type">boolean (optional)</span>
-                        <span class="param-desc">Тек ML модель қолдану</span>
+                    <div class="param-input-grid">
+                        <div class="param-input-item">
+                            <label for="hybrid-x1">x1 - Шикізат шығыны (т/тәулік)</label>
+                            <input type="number" id="hybrid-x1" value="240" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-x2">x2 - Шикізат тығыздығы (т/м³)</label>
+                            <input type="number" id="hybrid-x2" value="0.9" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-x3">x3 - Шикізат температурасы (°C)</label>
+                            <input type="number" id="hybrid-x3" value="210" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-x4">x4 - Реактор температурасы (°C)</label>
+                            <input type="number" id="hybrid-x4" value="518" step="0.1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-x5">x5 - Реактор қысымы (кгс/см²)</label>
+                            <input type="number" id="hybrid-x5" value="2.2" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-x6">x6 - Катализатор шығыны (кг/т)</label>
+                            <input type="number" id="hybrid-x6" value="16.5" step="0.01">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-fuzzy-weight">Fuzzy Logic салмағы</label>
+                            <input type="number" id="hybrid-fuzzy-weight" value="0.3" step="0.1" min="0" max="1">
+                        </div>
+                        <div class="param-input-item">
+                            <label for="hybrid-ml-weight">ML модель салмағы</label>
+                            <input type="number" id="hybrid-ml-weight" value="0.7" step="0.1" min="0" max="1">
+                        </div>
                     </div>
                 </div>
                 <div class="endpoint-buttons">
@@ -653,6 +682,182 @@
                 
                 const data = await response.json();
                 
+                // Health check үшін арнайы өңдеу
+                if (endpoint === 'health') {
+                    if (data.status === 'ok' && data.models_loaded && data.reverse_model_loaded && data.fuzzy_model_loaded && data.hybrid_model_loaded) {
+                        responseContent.innerHTML = `<div style="text-align: center; color: #4ecdc4; font-size: 1.2em; font-weight: bold; padding: 20px;">
+                            <i class="fas fa-check-circle" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                            Барлық модельдер істеп тұр
+                        </div>`;
+                    } else {
+                        responseContent.innerHTML = `<div style="text-align: center; color: #ff6b6b; font-size: 1.2em; font-weight: bold; padding: 20px;">
+                            <i class="fas fa-exclamation-triangle" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                            Кейбір модельдер істемейді
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Predict endpoint үшін арнайы өңдеу
+                if (endpoint === 'predict') {
+                    if (data.success && data.prediction) {
+                        responseContent.innerHTML = `
+                            <div class="param-input-grid" style="margin-top: 0;">
+                                <div class="param-input-item">
+                                    <label>y1 - Бензин шығымы (%)</label>
+                                    <input type="text" value="${data.prediction.y1.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>y2 - Бензин тығыздығы (кг/м³)</label>
+                                    <input type="text" value="${data.prediction.y2.toFixed(4)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        responseContent.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+                            <i class="fas fa-exclamation-triangle"></i> Болжау қатесі: ${data.error || 'Белгісіз қате'}
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Reverse-predict endpoint үшін арнайы өңдеу
+                if (endpoint === 'reverse-predict') {
+                    if (data.success && data.prediction) {
+                        responseContent.innerHTML = `
+                            <div class="param-input-grid" style="margin-top: 0;">
+                                <div class="param-input-item">
+                                    <label>x1 - Шикізат шығыны (т/тәулік)</label>
+                                    <input type="text" value="${data.prediction.x1.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x2 - Шикізат тығыздығы (кг/м³)</label>
+                                    <input type="text" value="${data.prediction.x2.toFixed(4)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x3 - Шикізат температурасы (°С)</label>
+                                    <input type="text" value="${data.prediction.x3.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x4 - Реактор температурасы (°С)</label>
+                                    <input type="text" value="${data.prediction.x4.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x5 - Реактор қысымы (кгс/см²)</label>
+                                    <input type="text" value="${data.prediction.x5.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x6 - Катализатор шығыны (кг/т)</label>
+                                    <input type="text" value="${data.prediction.x6.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        responseContent.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+                            <i class="fas fa-exclamation-triangle"></i> Кері болжау қатесі: ${data.error || 'Белгісіз қате'}
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Fuzzy predict endpoint үшін арнайы өңдеу
+                if (endpoint === 'fuzzy/predict') {
+                    if (data.success && data.prediction) {
+                        responseContent.innerHTML = `
+                            <div class="param-input-grid" style="margin-top: 0;">
+                                <div class="param-input-item">
+                                    <label>y1 - Бензин шығымы (%)</label>
+                                    <input type="text" value="${data.prediction.y1.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>y2 - Бензин тығыздығы (кг/м³)</label>
+                                    <input type="text" value="${data.prediction.y2.toFixed(4)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        responseContent.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+                            <i class="fas fa-exclamation-triangle"></i> Fuzzy болжау қатесі: ${data.error || 'Белгісіз қате'}
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Optimize endpoint үшін арнайы өңдеу
+                if (endpoint === 'optimize') {
+                    if (data.success && data.prediction) {
+                        responseContent.innerHTML = `
+                            <div class="param-input-grid" style="margin-top: 0;">
+                                <div class="param-input-item">
+                                    <label>x1 - Шикізат шығыны (т/тәулік)</label>
+                                    <input type="text" value="${data.prediction.x1.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x2 - Шикізат тығыздығы (кг/м³)</label>
+                                    <input type="text" value="${data.prediction.x2.toFixed(4)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x3 - Шикізат температурасы (°С)</label>
+                                    <input type="text" value="${data.prediction.x3.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x4 - Реактор температурасы (°С)</label>
+                                    <input type="text" value="${data.prediction.x4.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x5 - Реактор қысымы (кгс/см²)</label>
+                                    <input type="text" value="${data.prediction.x5.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>x6 - Катализатор шығыны (кг/т)</label>
+                                    <input type="text" value="${data.prediction.x6.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        responseContent.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+                            <i class="fas fa-exclamation-triangle"></i> Оптимизация қатесі: ${data.error || 'Белгісіз қате'}
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Hybrid predict endpoint үшін арнайы өңдеу
+                if (endpoint === 'hybrid/predict') {
+                    if (data.success && data.prediction) {
+                        responseContent.innerHTML = `
+                            <div class="param-input-grid" style="margin-top: 0;">
+                                <div class="param-input-item">
+                                    <label>y1 - Бензин шығымы (%)</label>
+                                    <input type="text" value="${data.prediction.y1.toFixed(3)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                                <div class="param-input-item">
+                                    <label>y2 - Бензин тығыздығы (кг/м³)</label>
+                                    <input type="text" value="${data.prediction.y2.toFixed(4)}" readonly style="background: rgba(78, 205, 196, 0.1); border-color: rgba(78, 205, 196, 0.3); color: #4ecdc4; font-weight: bold;">
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        responseContent.innerHTML = `<div style="color: #ff6b6b; padding: 15px; background: rgba(255, 107, 107, 0.1); border-radius: 8px; border: 1px solid rgba(255, 107, 107, 0.3);">
+                            <i class="fas fa-exclamation-triangle"></i> Hybrid болжау қатесі: ${data.error || 'Белгісіз қате'}
+                        </div>`;
+                    }
+                    return;
+                }
+                
+                // Feature Importance endpoint үшін арнайы өңдеу
+                if (endpoint === 'feature-importance') {
+                    formatFeatureImportance(data, responseContent);
+                    return;
+                }
+                
+                // Metrics endpoint үшін арнайы өңдеу
+                if (endpoint === 'metrics') {
+                    formatMetrics(data, responseContent);
+                    return;
+                }
+                
+                // Басқа endpoint'тер үшін JSON形式で білімді байланыс
                 const result = {
                     status: response.status,
                     statusText: response.statusText,
@@ -669,52 +874,45 @@
         // Predict тестілеу
         function testPredict() {
             const body = {
-                x1: 240,
-                x2: 0.9,
-                x3: 210,
-                x4: 518,
-                x5: 2.2,
-                x6: 16.5
+                x1: parseFloat(document.getElementById('predict-x1').value),
+                x2: parseFloat(document.getElementById('predict-x2').value),
+                x3: parseFloat(document.getElementById('predict-x3').value),
+                x4: parseFloat(document.getElementById('predict-x4').value),
+                x5: parseFloat(document.getElementById('predict-x5').value),
+                x6: parseFloat(document.getElementById('predict-x6').value)
             };
             testEndpoint('predict', 'POST', body);
         }
         
         function testPredictCustom() {
-            const x1 = prompt('x1 - Шикізат шығыны:', '240');
-            const x2 = prompt('x2 - Шикізат тығыздығы:', '0.9');
-            const x3 = prompt('x3 - Шикізат температурасы:', '210');
-            const x4 = prompt('x4 - Реактор температурасы:', '518');
-            const x5 = prompt('x5 - Реактор қысымы:', '2.2');
-            const x6 = prompt('x6 - Катализатор шығыны:', '16.5');
-            
-            if (x1 && x2 && x3 && x4 && x5 && x6) {
-                const body = {
-                    x1: parseFloat(x1),
-                    x2: parseFloat(x2),
-                    x3: parseFloat(x3),
-                    x4: parseFloat(x4),
-                    x5: parseFloat(x5),
-                    x6: parseFloat(x6)
-                };
-                testEndpoint('predict', 'POST', body);
-            }
+            // Use current input values - no prompt needed
+            testPredict();
         }
         
         // Reverse Predict тестілеу
         function testReversePredict() {
             const body = {
-                y1: 48.5,
-                y2: 0.72
+                y1: parseFloat(document.getElementById('reverse-y1').value),
+                y2: parseFloat(document.getElementById('reverse-y2').value)
             };
             testEndpoint('reverse-predict', 'POST', body);
         }
         
         // Optimize тестілеу
         function testOptimize() {
+            const w1 = parseFloat(document.getElementById('optimize-w1').value);
+            const w2 = parseFloat(document.getElementById('optimize-w2').value);
+            
             const body = {
-                y1: 50.0,
-                y2: 0.75
+                y1: parseFloat(document.getElementById('optimize-y1').value),
+                y2: parseFloat(document.getElementById('optimize-y2').value)
             };
+            
+            // Add weights if they are not both 1.0 (default)
+            if (w1 !== 1.0 || w2 !== 1.0) {
+                body.weights = [w1, w2];
+            }
+            
             testEndpoint('optimize', 'POST', body);
         }
         
@@ -731,12 +929,12 @@
         // Fuzzy Predict тестілеу
         function testFuzzyPredict() {
             const body = {
-                x1: 240,
-                x2: 0.9,
-                x3: 210,
-                x4: 518,
-                x5: 2.2,
-                x6: 16.5
+                x1: parseFloat(document.getElementById('fuzzy-x1').value),
+                x2: parseFloat(document.getElementById('fuzzy-x2').value),
+                x3: parseFloat(document.getElementById('fuzzy-x3').value),
+                x4: parseFloat(document.getElementById('fuzzy-x4').value),
+                x5: parseFloat(document.getElementById('fuzzy-x5').value),
+                x6: parseFloat(document.getElementById('fuzzy-x6').value)
             };
             testEndpoint('fuzzy/predict', 'POST', body);
         }
@@ -744,29 +942,180 @@
         // Hybrid Predict тестілеу
         function testHybridPredict() {
             const body = {
-                x1: 240,
-                x2: 0.9,
-                x3: 210,
-                x4: 518,
-                x5: 2.2,
-                x6: 16.5,
-                fuzzy_weight: 0.3,
-                ml_weight: 0.7
+                x1: parseFloat(document.getElementById('hybrid-x1').value),
+                x2: parseFloat(document.getElementById('hybrid-x2').value),
+                x3: parseFloat(document.getElementById('hybrid-x3').value),
+                x4: parseFloat(document.getElementById('hybrid-x4').value),
+                x5: parseFloat(document.getElementById('hybrid-x5').value),
+                x6: parseFloat(document.getElementById('hybrid-x6').value),
+                fuzzy_weight: parseFloat(document.getElementById('hybrid-fuzzy-weight').value),
+                ml_weight: parseFloat(document.getElementById('hybrid-ml-weight').value)
             };
             testEndpoint('hybrid/predict', 'POST', body);
         }
         
         function testHybridPredictFuzzyOnly() {
             const body = {
-                x1: 240,
-                x2: 0.9,
-                x3: 210,
-                x4: 518,
-                x5: 2.2,
-                x6: 16.5,
+                x1: parseFloat(document.getElementById('hybrid-x1').value),
+                x2: parseFloat(document.getElementById('hybrid-x2').value),
+                x3: parseFloat(document.getElementById('hybrid-x3').value),
+                x4: parseFloat(document.getElementById('hybrid-x4').value),
+                x5: parseFloat(document.getElementById('hybrid-x5').value),
+                x6: parseFloat(document.getElementById('hybrid-x6').value),
                 use_fuzzy_only: true
             };
             testEndpoint('hybrid/predict', 'POST', body);
+        }
+        
+        // Feature Importance деректерін форматтау
+        function formatFeatureImportance(data, responseContent) {
+            let outputHtml = '<div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 15px; margin-bottom: 15px;">';
+            outputHtml += '<h4 style="color: #4ecdc4; margin-bottom: 15px; font-size: 1em;"><i class="fas fa-chart-bar"></i> Параметрлердің маңыздылығы</h4>';
+            
+            const featureMappings = {
+                'x1': 'x1 - Шикізат шығыны',
+                'x2': 'x2 - Шикізат тығыздығы', 
+                'x3': 'x3 - Шикізат температурасы',
+                'x4': 'x4 - Реактор температурасы',
+                'x5': 'x5 - Реактор қысымы',
+                'x6': 'x6 - Катализатор шығыны'
+            };
+            
+            // y1 және y2 үшін маңыздылықты көрсету
+            if (data.y1 || data.y2) {
+                if (data.y1) {
+                    outputHtml += '<div style="margin-bottom: 15px;">';
+                    outputHtml += '<h5 style="color: #ffa502; margin-bottom: 10px;">y1 - Бензин шығымы үшін:</h5>';
+                    outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                    Object.keys(data.y1).forEach(feature => {
+                        const label = featureMappings[feature] || feature;
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${label}</label>
+                                <input type="text" value="${(data.y1[feature] * 100).toFixed(2)}%" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    });
+                    outputHtml += '</div></div>';
+                }
+                
+                if (data.y2) {
+                    outputHtml += '<div>';
+                    outputHtml += '<h5 style="color: #ffa502; margin-bottom: 10px;">y2 - Бензин тығыздығы үшін:</h5>';
+                    outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                    Object.keys(data.y2).forEach(feature => {
+                        const label = featureMappings[feature] || feature;
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${label}</label>
+                                <input type="text" value="${(data.y2[feature] * 100).toFixed(2)}%" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    });
+                    outputHtml += '</div></div>';
+                }
+            } else {
+                // Басқа форматтағы деректер
+                outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                Object.keys(data).forEach(key => {
+                    if (typeof data[key] === 'number') {
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${key}</label>
+                                <input type="text" value="${(data[key] * 100).toFixed(2)}%" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    }
+                });
+                outputHtml += '</div>';
+            }
+            
+            outputHtml += '</div>';
+            responseContent.innerHTML = outputHtml;
+        }
+        
+        // Metrics деректерін форматтау
+        function formatMetrics(data, responseContent) {
+            let outputHtml = '<div style="background: rgba(0, 0, 0, 0.2); border-radius: 8px; padding: 15px; margin-bottom: 15px;">';
+            outputHtml += '<h4 style="color: #4ecdc4; margin-bottom: 15px; font-size: 1em;"><i class="fas fa-chart-line"></i> Модель метрикалары</h4>';
+            
+            const metricMappings = {
+                'r2': 'R² (айқындау коэффициенті)',
+                'rmse': 'RMSE (орташа квадраттық қате)',
+                'mae': 'MAE (орташа абсолюттік қате)',
+                'mape': 'MAPE (орташа абсолюттік пайыздық қате)'
+            };
+            
+            // Әрбір модель үшін метрикаларды көрсету
+            if (data.y1 || data.y2) {
+                if (data.y1) {
+                    outputHtml += '<div style="margin-bottom: 15px;">';
+                    outputHtml += '<h5 style="color: #ffa502; margin-bottom: 10px;">y1 - Бензин шығымы моделі:</h5>';
+                    outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                    Object.keys(data.y1).forEach(metric => {
+                        const label = metricMappings[metric] || metric.toUpperCase();
+                        const value = data.y1[metric];
+                        const formattedValue = typeof value === 'number' ? 
+                            (metric === 'r2' ? value.toFixed(4) : value.toFixed(4)) : value;
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${label}</label>
+                                <input type="text" value="${formattedValue}" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    });
+                    outputHtml += '</div></div>';
+                }
+                
+                if (data.y2) {
+                    outputHtml += '<div>';
+                    outputHtml += '<h5 style="color: #ffa502; margin-bottom: 10px;">y2 - Бензин тығыздығы моделі:</h5>';
+                    outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                    Object.keys(data.y2).forEach(metric => {
+                        const label = metricMappings[metric] || metric.toUpperCase();
+                        const value = data.y2[metric];
+                        const formattedValue = typeof value === 'number' ? 
+                            (metric === 'r2' ? value.toFixed(4) : value.toFixed(4)) : value;
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${label}</label>
+                                <input type="text" value="${formattedValue}" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    });
+                    outputHtml += '</div></div>';
+                }
+            } else {
+                // Басқа форматтағы деректер
+                outputHtml += '<div class="param-input-grid" style="margin-top: 0;">';
+                Object.keys(data).forEach(key => {
+                    if (typeof data[key] === 'object') {
+                        Object.keys(data[key]).forEach(subKey => {
+                            const label = `${key} - ${metricMappings[subKey] || subKey.toUpperCase()}`;
+                            const value = data[key][subKey];
+                            const formattedValue = typeof value === 'number' ? value.toFixed(4) : value;
+                            outputHtml += `
+                                <div class="param-input-item">
+                                    <label>${label}</label>
+                                    <input type="text" value="${formattedValue}" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                                </div>
+                            `;
+                        });
+                    } else if (typeof data[key] === 'number') {
+                        const label = metricMappings[key] || key.toUpperCase();
+                        outputHtml += `
+                            <div class="param-input-item">
+                                <label>${label}</label>
+                                <input type="text" value="${data[key].toFixed(4)}" readonly style="background: rgba(255, 165, 2, 0.1); border-color: rgba(255, 165, 2, 0.3); color: #ffa502; font-weight: bold;">
+                            </div>
+                        `;
+                    }
+                });
+                outputHtml += '</div>';
+            }
+            
+            outputHtml += '</div>';
+            responseContent.innerHTML = outputHtml;
         }
         
         // Модельдерді оқыту функциясы

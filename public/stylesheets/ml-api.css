@@ -178,3 +178,50 @@
     margin-bottom: 25px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+
+/* Input field grid for ML model parameters */
+.ml-api-panel .param-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.ml-api-panel .param-input-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.ml-api-panel .param-input-item label {
+    color: #4ecdc4;
+    font-size: 0.9em;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.ml-api-panel .param-input-item input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    padding: 8px 12px;
+    color: #ffffff;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    transition: all 0.3s ease;
+}
+
+.ml-api-panel .param-input-item input:focus {
+    outline: none;
+    border-color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.1);
+    box-shadow: 0 0 0 2px rgba(78, 205, 196, 0.3);
+}
+
+.ml-api-panel .param-input-item input:hover {
+    border-color: rgba(78, 205, 196, 0.5);
+}
+
+.ml-api-panel .param-input-item input::placeholder {
+    color: #b0b0b0;
+}
