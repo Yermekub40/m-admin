@@ -1802,6 +1802,27 @@ class ProcessController {
         // Шығын графигі
         const flowCtx = document.getElementById('flowChart');
         if (flowCtx) {
+            const flowOptions = JSON.parse(JSON.stringify(chartOptions));
+            flowOptions.scales = {
+                x: chartOptions.scales.x,
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: { display: true, text: 'Шикізат шығыны (x1)' },
+                    ticks: { color: '#b0b0b0' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: { display: true, text: 'Катализатор шығыны (x6)' },
+                    ticks: { color: '#b0b0b0' },
+                    grid: { drawOnChartArea: false }
+                }
+            };
+
             this.charts.flow = new Chart(flowCtx, {
                 type: 'line',
                 data: {
@@ -1810,6 +1831,7 @@ class ProcessController {
                         {
                             label: 'Шикізат шығыны (x1)',
                             data: [],
+                            yAxisID: 'y',
                             borderColor: '#56ab2f',
                             backgroundColor: 'rgba(86, 171, 47, 0.1)',
                             tension: 0.4
@@ -1817,13 +1839,14 @@ class ProcessController {
                         {
                             label: 'Катализатор шығыны (x6)',
                             data: [],
+                            yAxisID: 'y1',
                             borderColor: '#a8e063',
                             backgroundColor: 'rgba(168, 224, 99, 0.1)',
                             tension: 0.4
                         }
                     ]
                 },
-                options: chartOptions
+                options: flowOptions
             });
         }
         
