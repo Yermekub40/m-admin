@@ -179,8 +179,13 @@ class ReverseModel:
         
         predictions = {}
         for param_name in self.output_names:
-            x_pred_scaled = self.models[param_name].predict(Y_scaled)
+            x_pred_scaled = self.models[param_name].predict(Y_scaled) # type: ignore
+            #x_pred = self.scalers[param_name].inverse_transform(x_pred_scaled.reshape(-1, 1))[0, 0]
             x_pred = self.scalers[param_name].inverse_transform(x_pred_scaled.reshape(-1, 1))[0, 0]
+
+            # Ограничение диапазона
+            if param_name == 'x6':
+                x_pred = max(2, min(17, x_pred))
             predictions[param_name] = float(x_pred)
         
         return predictions
